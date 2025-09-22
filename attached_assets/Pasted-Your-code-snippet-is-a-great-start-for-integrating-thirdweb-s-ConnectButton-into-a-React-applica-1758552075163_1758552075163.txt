@@ -1,0 +1,129 @@
+Your code snippet is a great start for integrating **thirdweb’s ConnectButton** into a React application, allowing users to connect their wallets (including in-app wallets and popular external wallets like MetaMask, Coinbase, Rainbow, etc.). Here’s a breakdown of what you have and what you might want to consider:
+
+---
+
+### **What Your Code Does:**
+1. **Creates a thirdweb client** with your `clientId`.
+2. **Defines a list of wallets** users can connect with, including:
+   - **In-app wallet** with multiple social login options (Google, Discord, Telegram, etc.).
+   - **External wallets** (MetaMask, Coinbase, Rainbow, Rabby, Zerion).
+3. **Renders a `ConnectButton`** with customizable modal options (privacy policy, terms of service, title, and icon).
+
+---
+
+### **What You Need to Do Next:**
+#### 1. **Set Up Your Project**
+- Ensure you have a React project set up (e.g., using `create-react-app`, Next.js, or Vite).
+- Install the required thirdweb packages:
+  ```bash
+  npm install @thirdweb-dev/react @thirdweb-dev/wallets
+  ```
+  or
+  ```bash
+  yarn add @thirdweb-dev/react @thirdweb-dev/wallets
+  ```
+
+#### 2. **Replace `clientId`**
+- Replace `"...."` with your actual **thirdweb client ID** from the [thirdweb dashboard](https://thirdweb.com/dashboard).
+
+#### 3. **Customize the Modal**
+- Update the `privacyPolicyUrl` and `termsOfServiceUrl` to point to your actual privacy policy and terms of service pages.
+- Ensure the `titleIcon` URL points to a valid image (e.g., your app logo).
+
+#### 4. **Wrap Your App with `ThirdwebProvider`**
+- Your app must be wrapped with the `ThirdwebProvider` to use thirdweb hooks and components. Example:
+  ```jsx
+  import { ThirdwebProvider } from "thirdweb/react";
+
+  function App() {
+    return (
+      <ThirdwebProvider>
+        <Example />
+      </ThirdwebProvider>
+    );
+  }
+  ```
+
+#### 5. **Test the Integration**
+- Run your app and test the wallet connection flow. Ensure the modal appears and users can connect their wallets.
+
+---
+
+### **Example: Full App Structure**
+Here’s how your `App.js` or `App.tsx` might look:
+```jsx
+import { ThirdwebProvider } from "thirdweb/react";
+import { createThirdwebClient } from "thirdweb";
+import { inAppWallet, createWallet } from "thirdweb/wallets";
+import { ConnectButton } from "thirdweb/react";
+
+const client = createThirdwebClient({
+  clientId: "YOUR_CLIENT_ID", // Replace with your actual client ID
+});
+
+const wallets = [
+  inAppWallet({
+    auth: {
+      options: [
+        "google",
+        "discord",
+        "telegram",
+        "farcaster",
+        "email",
+        "x",
+        "passkey",
+        "phone",
+        "github",
+        "tiktok",
+        "coinbase",
+        "guest",
+        "facebook",
+        "line",
+        "twitch",
+        "steam",
+        "apple",
+      ],
+    },
+  }),
+  createWallet("io.metamask"),
+  createWallet("com.coinbase.wallet"),
+  createWallet("me.rainbow"),
+  createWallet("io.rabby"),
+  createWallet("io.zerion.wallet"),
+];
+
+function Example() {
+  return (
+    <ConnectButton
+      client={client}
+      connectModal={{
+        privacyPolicyUrl: "https://eyaizero-admin-template.vercel.app/",
+        size: "compact",
+        termsOfServiceUrl: "https://eyaizero-app.web.app",
+        title: "eyaizero",
+        titleIcon: "https://eyaizero-app.web.app/logo.png", // Update with a valid image URL
+      }}
+      wallets={wallets}
+    />
+  );
+}
+
+function App() {
+  return (
+    <ThirdwebProvider>
+      <Example />
+    </ThirdwebProvider>
+  );
+}
+
+export default App;
+```
+
+---
+
+### **Next Steps**
+- **Deploy your app** (e.g., Vercel, Netlify, or your preferred hosting).
+- **Test on multiple devices** to ensure compatibility.
+- **Monitor wallet connections** and user feedback.
+
+---
