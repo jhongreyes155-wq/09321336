@@ -3,7 +3,7 @@ import { inAppWallet, createWallet } from "thirdweb/wallets";
 
 // Create thirdweb client with your client ID
 export const client = createThirdwebClient({
-  clientId: process.env.VITE_THIRDWEB_CLIENT_ID || "your-client-id-here",
+  clientId: import.meta.env.VITE_THIRDWEB_CLIENT_ID || "your-client-id-here",
 });
 
 // Define available wallets
